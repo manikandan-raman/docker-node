@@ -13,6 +13,9 @@ export async function connectDB() {
       synchronize: true,
       logging: false,
       entities: [Todo],
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
     return await dataSource.initialize();
   } catch (error) {

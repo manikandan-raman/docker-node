@@ -2,6 +2,7 @@ import fastify, { FastifyInstance } from 'fastify';
 import { todoRoute } from './routes/todo.route';
 import { DataSource } from 'typeorm';
 import { connectDB } from './config/db';
+import fastifyCors from '@fastify/cors';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { config } from 'dotenv';
@@ -30,10 +31,15 @@ const swaggerUiOptions = {
   routePrefix: 'docs',
   exposeRoute: true,
 };
+
 export async function startServer() {
   server = fastify({ logger: true });
   void server.register(fastifySwagger, swaggerOptions);
   void server.register(fastifySwaggerUi, swaggerUiOptions);
+
+  void server.register(fastifyCors, {
+    origin: '*',
+  });
 
   dataSource = await connectDB();
   server.register(todoRoute);
