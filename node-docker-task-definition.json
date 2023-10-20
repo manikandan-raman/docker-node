@@ -29,7 +29,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "public.ecr.aws/n8b2q4t2/node-docker-poc/node-docker:latest",
+      "image": "325183202751.dkr.ecr.ap-southeast-1.amazonaws.com/node-docker-poc:v1",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -46,27 +46,29 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "node-docker"
+      "name": "node-docker-poc"
     }
   ],
   "placementConstraints": [],
   "memory": null,
   "taskRoleArn": null,
-  "compatibilities": [
-    "EXTERNAL",
-    "EC2"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:325183202751:task-definition/node-docker-task-definition:1",
+  "compatibilities": ["EXTERNAL", "EC2"],
+  "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:325183202751:task-definition/node-docker-task-definition:3",
   "family": "node-docker-task-definition",
-  "requiresAttributes": [],
-  "pidMode": null,
-  "requiresCompatibilities": [
-    "EC2"
+  "requiresAttributes": [
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    }
   ],
+  "pidMode": null,
+  "requiresCompatibilities": ["EC2"],
   "networkMode": null,
   "runtimePlatform": null,
   "cpu": null,
-  "revision": 1,
+  "revision": 3,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
