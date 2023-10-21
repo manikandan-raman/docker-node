@@ -7,6 +7,9 @@ node_modules/
 # Optional eslint cache
 .eslintcache
 
+#build
+dist
+
 # dotenv environment variable files
 .env
 .env.development.local
