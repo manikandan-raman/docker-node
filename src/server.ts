@@ -43,7 +43,7 @@ export async function startServer() {
 
   dataSource = await connectDB();
   server.register(todoRoute);
-  server.get('/', (request, reply) => reply.send({ msg: 'success' }));
+  server.get('/', (request, reply) => reply.send({ msg: 'success!!!' }));
 
   server.ready((err) => {
     if (err) {
