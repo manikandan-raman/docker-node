@@ -2,7 +2,7 @@ name: CICD
 
 on:
   push:
-    branches: [cicd-pipeline]
+    branches: [cicd-ec2-pipeline]
 
 jobs:
   build-and-deploy:
@@ -47,17 +47,19 @@ jobs:
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: node-docker-task-definition.json 
-          container-name: node-docker-poc
-          image: ${{ steps.build-image.outputs.image }}    
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: node-docker-service
-          cluster:  dev-node-docker
-          wait-for-service-stability: true
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+  
+          # SSH into EC2 and run Docker commands
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $HOST << EOF
+            docker login -u AWS -p $(aws ecr get-login-password --region ap-southeast-1) $ECR_REGISTRY
+            docker pull ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker stop my-container || true
+            docker rm my-container || true
+            docker run -d --name my-container $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          EOF
