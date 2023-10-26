@@ -60,6 +60,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             set -x
+            echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             echo "registry_url: ${{ steps.login-ecr.outputs.registry }}"
             docker --version
             sudo aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
