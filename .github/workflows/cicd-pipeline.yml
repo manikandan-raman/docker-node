@@ -30,21 +30,31 @@ jobs:
           IMAGE_TAG: v1
           REPOSITORY: node-docker-poc
         run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
-          echo "registry_url: ${{ steps.login-ecr.outputs.registry }}"
-          docker compose build --no-cache \
+          # Echo the ECR registry for logging purposes
+          echo "registry_url: $ECR_REGISTRY"
+
+          # Build the Docker image with build arguments
+          docker build \
+            -t $IMAGE_NAME:$IMAGE_TAG \
+            --no-cache \
             --build-arg DB_HOST=${{ secrets.DB_HOST }} \
             --build-arg DB_PORT=${{ secrets.DB_PORT }} \
             --build-arg DB_USERNAME=${{ secrets.DB_USERNAME }} \
             --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             --build-arg DB_DATABASE=${{ secrets.DB_DATABASE }} \
             --build-arg SERVER_HOST=${{ secrets.SERVER_HOST }} \
-            --build-arg SERVER_PORT=${{ secrets.SERVER_PORT }}
+            --build-arg SERVER_PORT=${{ secrets.SERVER_PORT }} \
+            .
+
+          # Tag the Docker image with the ECR registry info
           docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+          # Push the Docker image to Amazon ECR
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV    
+
+          # Output the full image name for subsequent steps (if needed)
+          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+
 
       - name: Connect to EC2 instance and deploy
         env:
