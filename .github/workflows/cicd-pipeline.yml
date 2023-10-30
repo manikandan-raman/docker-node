@@ -24,14 +24,6 @@ jobs:
           
       - name: Build, tag, and push the image to Amazon ECR
         id: build-image
-        args:
-          DB_HOST:
-          DB_PORT:
-          DB_USERNAME:
-          DB_PASSWORD:
-          DB_DATABASE:
-          SERVER_HOST:
-          SERVER_PORT:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_NAME: node-docker
@@ -42,16 +34,17 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           echo "registry_url: ${{ steps.login-ecr.outputs.registry }}"
-          docker compose build --no-cache --build-arg DB_HOST: ${{ secrets.DB_HOST }} \
-          DB_PORT: ${{ secrets.DB_PORT }} \
-          DB_USERNAME: ${{ secrets.DB_DB_USERNAME }} \
-          DB_PASSWORD: ${{ secrets.DB_DB_PASSWORD }} \
-          DB_DATABASE: ${{ secrets.DB_DATABASE }} \
-          SERVER_HOST: ${{ secrets.SERVER_HOST }} \
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          docker compose build --no-cache \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            --build-arg DB_DATABASE=${{ secrets.DB_DATABASE }} \
+            --build-arg SERVER_HOST=${{ secrets.SERVER_HOST }} \
+            --build-arg SERVER_PORT=${{ secrets.SERVER_PORT }}
           docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
+          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV    
 
       - name: Connect to EC2 instance and deploy
         env:
