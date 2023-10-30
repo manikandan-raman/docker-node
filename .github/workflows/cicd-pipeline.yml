@@ -74,7 +74,8 @@ jobs:
             echo "registry_url: ${{ steps.login-ecr.outputs.registry }}"
             docker --version
             systemctl status docker
-            aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_REGISTRY/$REPOSITORY
+            aws --version
+            aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 325183202751.dkr.ecr.ap-southeast-1.amazonaws.com/node-docker-poc
             docker pull $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
             docker stop my-container || true
             docker rm my-container || true
