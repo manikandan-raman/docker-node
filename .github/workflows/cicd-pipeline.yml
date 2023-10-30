@@ -79,5 +79,5 @@ jobs:
             docker pull 325183202751.dkr.ecr.ap-southeast-1.amazonaws.com/node-docker-poc:v1
             docker stop my-container || true
             docker rm my-container || true
-            docker run -d --name my-container 325183202751.dkr.ecr.ap-southeast-1.amazonaws.com/node-docker-poc:v1
+            docker run -d -p 5000:5000 --name my-container 325183202751.dkr.ecr.ap-southeast-1.amazonaws.com/node-docker-poc:v1
 
