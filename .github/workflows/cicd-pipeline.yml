@@ -69,6 +69,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             set -x
+            hostname -I
             echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             echo "registry_url: ${{ steps.login-ecr.outputs.registry }}"
             docker --version
