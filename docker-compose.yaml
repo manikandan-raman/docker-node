@@ -5,7 +5,7 @@ services:
     image: node-docker:v1
     ports:
       - 5000:5000
-    environment:
+    args:
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
       DB_HOST: ${DB_HOST}
