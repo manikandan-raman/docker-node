@@ -7,14 +7,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: [ubuntu-latest]
-    env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DB_USERNAME: ${{ secrets.DB_DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_DB_PASSWORD }}
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      SERVER_HOST: ${{ secrets.SERVER_HOST }}
-      SERVER_PORT: ${{ secrets.SERVER_PORT }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -33,6 +25,13 @@ jobs:
       - name: Build, tag, and push the image to Amazon ECR
         id: build-image
         env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USERNAME: ${{ secrets.DB_DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_NAME: node-docker
           IMAGE_TAG: v1
