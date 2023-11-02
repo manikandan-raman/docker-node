@@ -38,3 +38,7 @@ If you want to run it locally, follow these steps:
    ```bash
    npm run dev
 
+## Swagger Documentation
+
+You can access the Swagger documentation for this project by visiting the following URL in local by navigating to **/docs**
+
