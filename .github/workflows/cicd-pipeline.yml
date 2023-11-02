@@ -2,9 +2,8 @@ name: CICD
 
 on:
   push:
-    paths:
-      - '**'
-      '!README.md'
+    paths-ignore:
+      - '**/README.md'
     branches: [cicd-ec2-pipeline]
 
 jobs:
