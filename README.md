@@ -35,7 +35,6 @@ If you want to run it locally, follow these steps:
    npm install
 
 2. **Start the Application in Development Mode**:
-
    ```bash
    npm run dev
 
