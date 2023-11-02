@@ -1,6 +1,13 @@
 # Project Name: docker-node
 
-It's an backend application developed to work on a POC.
+It's a backend application developed to work on a POC. Basically, it provides a todo API to keep track of things.
+
+## Technologies Used
+
+- Fastify
+- TypeScript
+- TypeORM
+- PostgreSQL
 
 ## Prerequisites
 
@@ -18,3 +25,17 @@ Before you begin, ensure you have Docker installed on your system. If not, downl
    docker-compose up
 
 This will set up and start the necessary services defined in the `docker-compose.yml` file.
+
+## Running Locally
+
+If you want to run it locally, follow these steps:
+
+1. **Install Dependencies**:
+   ```bash
+   npm install
+
+2. **Start the Application in Development Mode**:
+
+   ```bash
+   npm run dev
+
